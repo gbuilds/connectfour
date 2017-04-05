@@ -6,6 +6,7 @@ class Board {
 	constructor() {
 		this.grid = [[],[],[],[],[],[],[]];
 		this.playerOne = true;
+		this.color = "red"
 	}
 
 	addPiece(grid, x, color) {
@@ -19,11 +20,37 @@ class Board {
 		}
 	}
 
+	flipColor() {
+		if (this.color == "red") {
+			this.color = "yel"
+			return "yel"
+		} else {
+			this.color = "red"
+			return "red"
+		}
+	}
+
 	checkForWin() {
 		// up and down
 		// side to side
 		// downward slope
 		// upward slope
+	}
+
+	// columnWin(0, 0, 1, "red")
+
+	columnWin(column, position, inARow, color) {
+		return true if { inARow == 4 }
+
+		if (column[position + 1] == color) {
+			var newScore = inARow + 1
+			var newPosition = position + 1
+			columnWin(column, newPosition, newScore, color)
+		} else {
+			var newColor = this.flipColor()
+			var columnWin(column, newPosition, inARow, newColor)
+		}
+
 	}
 
 }

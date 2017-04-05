@@ -20,12 +20,10 @@ class Board {
 		}
 	}
 
-	flipColor() {
-		if (this.color == "red") {
-			this.color = "yel"
+	flipColor(color) {
+		if (color == "red") {
 			return "yel"
 		} else {
-			this.color = "red"
 			return "red"
 		}
 	}
@@ -37,20 +35,34 @@ class Board {
 		// upward slope
 	}
 
-	// columnWin(0, 0, 1, "red")
+	// columnWin(this.grid[0], 0, 1, "yel")
 
-	columnWin(column, position, inARow, color) {
-		return true if { inARow == 4 }
+	columnWin(column, index, inARow, color) {
+		if (inARow == 4) { console.log(`${color} wins`); return true }
+		var newIndex = index + 1;
+	  var notEnoughSpace = notEnoughSpacesToWin()
+		if (notEnoughSpace) { console.log("spaces"); return false };
+		
+		if (newIndex > 6 ) { console.log("it broke"); return false }
 
-		if (column[position + 1] == color) {
-			var newScore = inARow + 1
-			var newPosition = position + 1
-			columnWin(column, newPosition, newScore, color)
-		} else {
-			var newColor = this.flipColor()
-			var columnWin(column, newPosition, inARow, newColor)
+		function notEnoughSpacesToWin() {
+			// number of spaces left for checking is greater or equal to
+			// the number left needed to make a winning 4
+			if (5 - index >= 4 - inARow) {
+				return false
+			} else {
+				// there isnt enough space to continue our check
+				return true
+			}
 		}
-
+		
+		if (column[index + 1] == color) {
+			var newScore = inARow + 1
+			return this.columnWin(column, newIndex, newScore, color)
+		} else {
+			var newColor = this.flipColor(color)
+			return this.columnWin(column, newIndex, inARow, newColor)
+		}
 	}
 
 }
@@ -59,6 +71,12 @@ b = new Board()
 b.addPiece(b.grid, 0, "yel")
 b.addPiece(b.grid, 0, "red")
 b.addPiece(b.grid, 0, "yel")
+b.addPiece(b.grid, 0, "yel")
+b.addPiece(b.grid, 0, "red")
+b.addPiece(b.grid, 0, "yel")
 b.addPiece(b.grid, 1, "yel")
 b.addPiece(b.grid, 1, "yel")
-b.addPiece(b.grid, 1, "yel")
+b.addPiece(b.grid, 1, "red")
+b.addPiece(b.grid, 1, "red")
+b.addPiece(b.grid, 1, "red")
+b.addPiece(b.grid, 1, "red")

@@ -29,19 +29,28 @@ class Board {
 	}
 
 	checkForWin() {
-		// up and down
+		var victory = false
+
+		// column win
+		for (let i = 0; i < this.grid.length; i++) {
+			var winner = this.columnWin(this.grid[i], 0, 1, "yel");
+			if (winner) { victory = winner }
+		}
+
 		// side to side
 		// downward slope
 		// upward slope
+		console.log("victory?")
+		return victory
 	}
 
 	// columnWin(this.grid[0], 0, 1, "yel")
 
 	columnWin(column, index, inARow, color) {
-		if (inARow == 4) { console.log(`${color} wins`); return true }
+		if (inARow == 4) { return color }
 		var newIndex = index + 1;
 	  var notEnoughSpace = notEnoughSpacesToWin()
-		if (notEnoughSpace) { console.log("spaces"); return false };
+		if (notEnoughSpace) { console.log("(spaces)"); return false };
 		
 		if (newIndex > 6 ) { console.log("it broke"); return false }
 
@@ -55,8 +64,12 @@ class Board {
 				return true
 			}
 		}
-		
-		if (column[index + 1] == color) {
+
+		if (index == 0) {
+			var newColor = column[index]
+			var newScore = inARow + 1
+			return this.columnWin(column, newIndex, newScore, newColor)
+		} else if (column[index + 1] == color) {
 			var newScore = inARow + 1
 			return this.columnWin(column, newIndex, newScore, color)
 		} else {
@@ -65,18 +78,12 @@ class Board {
 		}
 	}
 
+	// rowWin(row, 0, 1, "red")
+
+
+
+
+
 }
 console.log("hello")
 b = new Board()
-b.addPiece(b.grid, 0, "yel")
-b.addPiece(b.grid, 0, "red")
-b.addPiece(b.grid, 0, "yel")
-b.addPiece(b.grid, 0, "yel")
-b.addPiece(b.grid, 0, "red")
-b.addPiece(b.grid, 0, "yel")
-b.addPiece(b.grid, 1, "yel")
-b.addPiece(b.grid, 1, "yel")
-b.addPiece(b.grid, 1, "red")
-b.addPiece(b.grid, 1, "red")
-b.addPiece(b.grid, 1, "red")
-b.addPiece(b.grid, 1, "red")

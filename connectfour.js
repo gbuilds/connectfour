@@ -38,7 +38,6 @@ class Board {
     }
 
     // row win
-
     for (let i = 0; i < 5; i++) {
       var winner = this.rowWin(i, 0, 1, "yel");
       if (winner) { victory = winner }

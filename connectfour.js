@@ -126,12 +126,19 @@ class Board {
     var notEnoughSpace = notEnoughSpacesToWin();
     if (notEnoughSpace) { console.log("(spaces)"); return false };
 
-    if (column > 7 || row > 7 ) { console.log("it broke"); return false };
+    if (column > 7 || row > 5 ) { console.log("it broke"); return false };
 
     function notEnoughSpacesToWin() {
-      // number of spaces left for checking is greater or equal to
-      // the number left needed to make a winning 4
-      if (6 - index >= 4 - inARow) {
+
+      var spacesLeft = getSpacesLeft()
+
+      function getSpacesLeft() {
+        var columnsLeft = 6 - column;
+        var rowsLeft = 5 - row;
+        return Math.min(rowsLeft, columnsLeft);
+      }
+
+      if (spacesLeft >= 4 - inARow) {
         return false
       } else {
         // there isnt enough space to continue our check
@@ -144,18 +151,18 @@ class Board {
       var newScore = inARow + 1;
       var newRow = row + 1;
       var newColumn = column + 1;
-      return this.rowWin(newColumn, newRow, newScore, newColor)
+      return this.upwardSlopeWin(newColumn, newRow, newScore, newColor)
     } else if (this.grid[column + 1][row + 1] == color) {
-      var newColor = color
+      var newColor = color;
       var newScore = inARow + 1;
       var newColumn = column + 1;
       var newRow = row + 1;
-      return this.rowWin(newColumn, newRow, newScore, newColor)
+      return this.upwardSlopeWin(newColumn, newRow, newScore, newColor)
     } else {
       var newColor = this.flipColor(color)
       var newColumn = column + 1;
       var newRow = row + 1;
-      return this.rowWin(newColumn, newRow, inARow, newColor)
+      return this.upwardSlopeWin(newColumn, newRow, inARow, newColor)
     }
 
   }  
@@ -165,10 +172,29 @@ class Board {
 }
 console.log("helloo")
 b = new Board()
+
+b.addPiece(b.grid, 0, "red")
+b.addPiece(b.grid, 1, "yel")
+b.addPiece(b.grid, 2, "red")
+b.addPiece(b.grid, 3, "yel")
+b.addPiece(b.grid, 4, "red")
+b.addPiece(b.grid, 5, "yel")
+b.addPiece(b.grid, 6, "red")
+
 b.addPiece(b.grid, 0, "red")
 b.addPiece(b.grid, 1, "red")
 b.addPiece(b.grid, 2, "red")
 b.addPiece(b.grid, 3, "yel")
-b.addPiece(b.grid, 4, "yel")
+b.addPiece(b.grid, 4, "red")
 b.addPiece(b.grid, 5, "yel")
-b.addPiece(b.grid, 6, "yel")
+b.addPiece(b.grid, 6, "red")
+
+b.addPiece(b.grid, 0, "red")
+b.addPiece(b.grid, 1, "yel")
+b.addPiece(b.grid, 2, "red")
+b.addPiece(b.grid, 3, "yel")
+b.addPiece(b.grid, 4, "red")
+b.addPiece(b.grid, 5, "yel")
+b.addPiece(b.grid, 6, "red")
+
+b.addPiece(b.grid, 3, "red")

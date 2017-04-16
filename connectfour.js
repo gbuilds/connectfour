@@ -30,12 +30,32 @@ class Board {
 
   // checksForAllWins()
 
+  checksForAllWins() {
+    var totalVictory = false
+    var columnWin = this.checksForColumnWin()
+    if (columnWin) {
+      console.log('VICTORY: column win');
+      totalVictory = columnWin;
+    }
+    var rowWin = this.checksForRowWin()
+    if (rowWin) {
+      console.log('VICTORY: row win');
+      totalVictory = rowWin;
+    }
+    var upSlopeWin = this.checksForUpwardSlopeWin()
+    if (upSlopeWin) {
+      console.log('VICTORY: upwards slope win');
+      totalVictory = upSlopeWin;
+    }
+    console.log(`victory: ${totalVictory}`);
+  }
+
   checksForColumnWin() {
     var victory = false;
     for (let i = 0; i < 7; i++) {
       var winner = this.columnWin(i, 0, 0, "yel");
       if (winner) { 
-        console.log(`i: ${i}, winner: ${winner}`);
+        console.log(`i: ${i}, winner: ${winner}, column win`);
         victory = winner
       }
     }
@@ -47,7 +67,7 @@ class Board {
     for (let i = 0; i < 6; i++) {
       var winner = this.rowWin(i, 0, 0, "yel");
       if (winner) { 
-        console.log(`i: ${i}, winner: ${winner}`);
+        console.log(`i: ${i}, winner: ${winner}, row win`);
         victory = winner
       }
     }
@@ -59,7 +79,7 @@ class Board {
     for (let i=0; i<6; i++) {
       var winner = this.upwardSlopeWin(i, 0, 0, "yel");
       if (winner) { 
-        console.log(`i: ${i}, winner: ${winner}`);
+        console.log(`i: ${i}, winner: ${winner}, upward sloped win`);
         victory = winner }
     }
 
@@ -248,3 +268,10 @@ b.addPiece(b.grid, 6, "yel")
 b.addPiece(b.grid, 6, "red")
 b.addPiece(b.grid, 6, "red")
 b.addPiece(b.grid, 6, "red")
+
+c = new Board()
+c.addPiece(c.grid, 0, "yel")
+c.addPiece(c.grid, 0, "yel")
+c.addPiece(c.grid, 0, "yel")
+c.addPiece(c.grid, 0, "yel")
+

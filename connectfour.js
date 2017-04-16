@@ -28,26 +28,41 @@ class Board {
     }
   }
 
-  checkForWin() {
-    var victory = false
+  // checksForAllWins()
 
-    // column win
-    for (let i = 0; i < this.grid.length; i++) {
-      var winner = this.columnWin(this.grid[i], 0, 1, "yel");
-      if (winner) { victory = winner }
+  checksForColumnWin() {
+      var victory = false;
+      for (let i = 0; i < this.grid.length; i++) {
+        var winner = this.columnWin(i, 0, 1, "yel");
+        if (winner) { victory = winner }
+      }
+      return victory
     }
 
-    // row win
+  checksForRowWin() {
+    var victory = false;
     for (let i = 0; i < 5; i++) {
       var winner = this.rowWin(i, 0, 1, "yel");
       if (winner) { victory = winner }
     }
+  return victory;
+  }
 
-    // downward slope
-    // upward slope
-    console.log("victory?")
+  checksForUpwardSlopeWin() {
+    var victory = false
+    for (let i=0; i<6; i++) {
+      var winner = this.upwardSlopeWin(i, 0, 1, "yel");
+      if (winner) { victory = winner }
+    }
+
+    for (let i=0; i<5; i++) {
+      var winner = this.upwardSlopeWin(0, i, 1, "yel");
+      if (winner) { victory = winner }
+    }
     return victory
   }
+
+  // checksForDownwardSlopeWin()
 
   // columnWin(0, 0, 1, "yel")
 
@@ -79,7 +94,7 @@ class Board {
       return this.columnWin(column, newIndex, newScore, color)
     } else {
       var newColor = this.flipColor(color)
-      return this.columnWin(column, newIndex, inARow, newColor)
+      return this.columnWin(column, newIndex, 1, newColor)
     }
   }
 
@@ -90,7 +105,6 @@ class Board {
     var newIndex = index + 1;
     var notEnoughSpace = notEnoughSpacesToWin();
     if (notEnoughSpace) { console.log("(spaces)"); return false };
-
     if (newIndex > 7 ) { console.log("it broke"); return false };
 
     function notEnoughSpacesToWin() {
@@ -114,7 +128,7 @@ class Board {
       return this.rowWin(row, newIndex, newScore, newColor)
     } else {
       var newColor = this.flipColor(color)
-      return this.rowWin(row, newIndex, inARow, newColor)
+      return this.rowWin(row, newIndex, 1, newColor)
     }
 
   }
@@ -146,23 +160,22 @@ class Board {
       }
     }
 
-    if (inARow == 0) {
+    if (column == 0 || row == 0) {
       var newColor = this.grid[column][row];
       var newScore = inARow + 1;
       var newRow = row + 1;
       var newColumn = column + 1;
       return this.upwardSlopeWin(newColumn, newRow, newScore, newColor)
-    } else if (this.grid[column + 1][row + 1] == color) {
-      var newColor = color;
+    } else if (this.grid[column][row] == color) {
       var newScore = inARow + 1;
       var newColumn = column + 1;
       var newRow = row + 1;
-      return this.upwardSlopeWin(newColumn, newRow, newScore, newColor)
+      return this.upwardSlopeWin(newColumn, newRow, newScore, color)
     } else {
       var newColor = this.flipColor(color)
       var newColumn = column + 1;
       var newRow = row + 1;
-      return this.upwardSlopeWin(newColumn, newRow, inARow, newColor)
+      return this.upwardSlopeWin(newColumn, newRow, 1, newColor)
     }
 
   }  
@@ -173,28 +186,51 @@ class Board {
 console.log("helloo")
 b = new Board()
 
+b.addPiece(b.grid, 0, "yel")
+b.addPiece(b.grid, 0, "yel")
+b.addPiece(b.grid, 0, "yel")
 b.addPiece(b.grid, 0, "red")
-b.addPiece(b.grid, 1, "yel")
-b.addPiece(b.grid, 2, "red")
-b.addPiece(b.grid, 3, "yel")
-b.addPiece(b.grid, 4, "red")
-b.addPiece(b.grid, 5, "yel")
-b.addPiece(b.grid, 6, "red")
+b.addPiece(b.grid, 0, "red")
+b.addPiece(b.grid, 0, "red")
 
-b.addPiece(b.grid, 0, "red")
 b.addPiece(b.grid, 1, "red")
-b.addPiece(b.grid, 2, "red")
-b.addPiece(b.grid, 3, "yel")
-b.addPiece(b.grid, 4, "red")
-b.addPiece(b.grid, 5, "yel")
-b.addPiece(b.grid, 6, "red")
-
-b.addPiece(b.grid, 0, "red")
 b.addPiece(b.grid, 1, "yel")
+b.addPiece(b.grid, 1, "red")
+b.addPiece(b.grid, 1, "yel")
+b.addPiece(b.grid, 1, "yel")
+b.addPiece(b.grid, 1, "yel")
+
+b.addPiece(b.grid, 2, "yel")
+b.addPiece(b.grid, 2, "yel")
+b.addPiece(b.grid, 2, "yel")
 b.addPiece(b.grid, 2, "red")
-b.addPiece(b.grid, 3, "yel")
-b.addPiece(b.grid, 4, "red")
-b.addPiece(b.grid, 5, "yel")
-b.addPiece(b.grid, 6, "red")
+b.addPiece(b.grid, 2, "red")
+b.addPiece(b.grid, 2, "red")
 
 b.addPiece(b.grid, 3, "red")
+b.addPiece(b.grid, 3, "red")
+b.addPiece(b.grid, 3, "yel")
+b.addPiece(b.grid, 3, "red")
+b.addPiece(b.grid, 3, "yel")
+b.addPiece(b.grid, 3, "yel")
+
+b.addPiece(b.grid, 4, "yel")
+b.addPiece(b.grid, 4, "yel")
+b.addPiece(b.grid, 4, "yel")
+b.addPiece(b.grid, 4, "red")
+b.addPiece(b.grid, 4, "red")
+b.addPiece(b.grid, 4, "red")
+
+b.addPiece(b.grid, 5, "red")
+b.addPiece(b.grid, 5, "red")
+b.addPiece(b.grid, 5, "red")
+b.addPiece(b.grid, 5, "yel")
+b.addPiece(b.grid, 5, "yel")
+b.addPiece(b.grid, 5, "yel")
+
+b.addPiece(b.grid, 6, "yel")
+b.addPiece(b.grid, 6, "yel")
+b.addPiece(b.grid, 6, "yel")
+b.addPiece(b.grid, 6, "red")
+b.addPiece(b.grid, 6, "red")
+b.addPiece(b.grid, 6, "red")

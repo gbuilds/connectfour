@@ -47,7 +47,13 @@ class Board {
       console.log('VICTORY: upwards slope win');
       totalVictory = upSlopeWin;
     }
+    var downSlopeWin = this.checksForDownwardSlopeWin()
+    if (downSlopeWin) {
+      console.log('VICTORY: downwards slope win');
+      totalVictory = downSlopeWin;
+    }
     console.log(`victory: ${totalVictory}`);
+    return totalVictory;
   }
 
   checksForColumnWin() {
@@ -86,14 +92,31 @@ class Board {
     for (let i=0; i<5; i++) {
       var winner = this.upwardSlopeWin(0, i, 0, "yel");
       if (winner) { 
-        console.log(`i: ${i}, winner: ${winner}`);
+        console.log(`i: ${i}, winner: ${winner}, downward sloped win`);
         victory = winner 
       }
     }
-    return victory
+    return victory;
   }
 
-  // checksForDownwardSlopeWin()
+  checksForDownwardSlopeWin() {
+    var victory = false
+    for (let i=6; i < 0; i--) {
+      var winner = this.downwardSlopeWin(i, 0, 0, "yel");
+      if (winner) {
+        console.log(`i: ${i}, winner: ${winner}, downward sloped win`);
+        victory = winner;
+      }
+    }
+    for (let i=0; i<5; i++) {
+      var winner = this.downwardSlopeWin(6, i, 0, "yel");
+      if (winner) {
+        console.log(`i: ${i}, winner: ${winner}, downward sloped win`);
+        victory = winner;
+      }
+    }
+    return victory;
+  }
 
   // columnWin(0, 0, 1, "yel")
 
@@ -215,63 +238,53 @@ class Board {
   }  
 
   // downwardSlopeWin()
+  // this just checks "right to left" in a similar manner as upwardSlopeWin
+
+  downwardSlopeWin(column, row, inARow, color) {
+    if (inARow == 4) { return color }
+
+    var notEnoughSpace = notEnoughSpacesToWin()
+    if (notEnoughSpace) { console.log("end check for downward slope"); return false };
+    
+    if (row > 6 ) { console.log("it broke"); return false }
+
+    function notEnoughSpacesToWin() {
+
+      var spacesLeft = getSpacesLeft()
+      
+      function getSpacesLeft() {
+        var columnsLeft = column;
+        var rowsLeft = 5 - row;
+        return Math.min(rowsLeft, columnsLeft);
+      }
+
+      if (spacesLeft >= 4 - inARow) {
+        return false
+      } else {
+        // there isnt enough space to continue our check
+        return true
+      }
+    }
+
+    if (column == 6 || row == 0) {
+      var newColor = this.grid[column][row]
+      var newScore = inARow + 1;
+      var newRow = row + 1;
+      var newColumn = column - 1;
+      return this.downwardSlopeWin(newColumn, newRow, newScore, newColor)
+    } else if (this.grid[column][row] == color) {
+      var newScore = inARow + 1;
+      var newRow = row + 1;
+      var newColumn = column - 1;
+      return this.downwardSlopeWin(newColumn, newRow, newScore, color)
+    } else {
+      var newColor = this.flipColor(color)
+      var newRow = row + 1;
+      var newColumn = column - 1;
+      return this.downwardSlopeWin(newColumn, newRow, 1, newColor) 
+    }
+
+
+  }
 
 }
-console.log("helloo")
-b = new Board()
-
-b.addPiece(b.grid, 0, "yel")
-b.addPiece(b.grid, 0, "yel")
-b.addPiece(b.grid, 0, "yel")
-b.addPiece(b.grid, 0, "red")
-b.addPiece(b.grid, 0, "red")
-b.addPiece(b.grid, 0, "red")
-
-b.addPiece(b.grid, 1, "red")
-b.addPiece(b.grid, 1, "red")
-b.addPiece(b.grid, 1, "red")
-b.addPiece(b.grid, 1, "yel")
-b.addPiece(b.grid, 1, "yel")
-b.addPiece(b.grid, 1, "yel")
-
-b.addPiece(b.grid, 2, "yel")
-b.addPiece(b.grid, 2, "yel")
-b.addPiece(b.grid, 2, "yel")
-b.addPiece(b.grid, 2, "red")
-b.addPiece(b.grid, 2, "red")
-b.addPiece(b.grid, 2, "red")
-
-b.addPiece(b.grid, 3, "red")
-b.addPiece(b.grid, 3, "yel")
-b.addPiece(b.grid, 3, "red")
-b.addPiece(b.grid, 3, "yel")
-b.addPiece(b.grid, 3, "yel")
-b.addPiece(b.grid, 3, "red")
-
-b.addPiece(b.grid, 4, "yel")
-b.addPiece(b.grid, 4, "yel")
-b.addPiece(b.grid, 4, "yel")
-b.addPiece(b.grid, 4, "red")
-b.addPiece(b.grid, 4, "red")
-b.addPiece(b.grid, 4, "red")
-
-b.addPiece(b.grid, 5, "red")
-b.addPiece(b.grid, 5, "red")
-b.addPiece(b.grid, 5, "red")
-b.addPiece(b.grid, 5, "red")
-b.addPiece(b.grid, 5, "yel")
-b.addPiece(b.grid, 5, "yel")
-
-b.addPiece(b.grid, 6, "yel")
-b.addPiece(b.grid, 6, "yel")
-b.addPiece(b.grid, 6, "yel")
-b.addPiece(b.grid, 6, "red")
-b.addPiece(b.grid, 6, "red")
-b.addPiece(b.grid, 6, "red")
-
-c = new Board()
-c.addPiece(c.grid, 0, "yel")
-c.addPiece(c.grid, 0, "yel")
-c.addPiece(c.grid, 0, "yel")
-c.addPiece(c.grid, 0, "yel")
-

@@ -32,7 +32,7 @@ class Board {
 
   checksForColumnWin() {
     var victory = false;
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 7; i++) {
       var winner = this.columnWin(i, 0, 0, "yel");
       if (winner) { 
         console.log(`i: ${i}, winner: ${winner}`);
@@ -44,7 +44,7 @@ class Board {
 
   checksForRowWin() {
     var victory = false;
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 6; i++) {
       var winner = this.rowWin(i, 0, 0, "yel");
       if (winner) { 
         console.log(`i: ${i}, winner: ${winner}`);
@@ -87,7 +87,7 @@ class Board {
     function notEnoughSpacesToWin() {
       // number of spaces left for checking is greater or equal to
       // the number left needed to make a winning 4
-      if (5 - row >= 4 - inARow) {
+      if (6 - row >= 4 - inARow) {
         return false
       } else {
         // there isnt enough space to continue our check
@@ -106,6 +106,7 @@ class Board {
       return this.columnWin(column, newRow, newScore, color)
     } else {
       var newColor = this.flipColor(color)
+      var newRow = row + 1;
       return this.columnWin(column, newRow, 1, newColor)
     }
   }
@@ -121,7 +122,7 @@ class Board {
     function notEnoughSpacesToWin() {
       // number of spaces left for checking is greater or equal to
       // the number left needed to make a winning 4
-      if (6 - column >= 4 - inARow) {
+      if (7 - column >= 4 - inARow) {
         return false
       } else {
         // there isnt enough space to continue our check
@@ -135,12 +136,12 @@ class Board {
       var newColumn = column + 1;
       return this.rowWin(row, newColumn, newScore, newColor)
     } else if (this.grid[column][row] == color) {
-      var newColor = color
       var newScore = inARow + 1;
       var newColumn = column + 1;
-      return this.rowWin(row, newColumn, newScore, newColor)
+      return this.rowWin(row, newColumn, newScore, color)
     } else {
       var newColor = this.flipColor(color)
+      var newColumn = column + 1;
       return this.rowWin(row, newColumn, 1, newColor)
     }
 
@@ -207,7 +208,7 @@ b.addPiece(b.grid, 0, "red")
 b.addPiece(b.grid, 0, "red")
 
 b.addPiece(b.grid, 1, "red")
-b.addPiece(b.grid, 1, "yel")
+b.addPiece(b.grid, 1, "red")
 b.addPiece(b.grid, 1, "red")
 b.addPiece(b.grid, 1, "yel")
 b.addPiece(b.grid, 1, "yel")
@@ -221,11 +222,11 @@ b.addPiece(b.grid, 2, "red")
 b.addPiece(b.grid, 2, "red")
 
 b.addPiece(b.grid, 3, "red")
-b.addPiece(b.grid, 3, "red")
 b.addPiece(b.grid, 3, "yel")
 b.addPiece(b.grid, 3, "red")
 b.addPiece(b.grid, 3, "yel")
 b.addPiece(b.grid, 3, "yel")
+b.addPiece(b.grid, 3, "red")
 
 b.addPiece(b.grid, 4, "yel")
 b.addPiece(b.grid, 4, "yel")
@@ -237,7 +238,7 @@ b.addPiece(b.grid, 4, "red")
 b.addPiece(b.grid, 5, "red")
 b.addPiece(b.grid, 5, "red")
 b.addPiece(b.grid, 5, "red")
-b.addPiece(b.grid, 5, "yel")
+b.addPiece(b.grid, 5, "red")
 b.addPiece(b.grid, 5, "yel")
 b.addPiece(b.grid, 5, "yel")
 

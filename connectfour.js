@@ -1,7 +1,7 @@
 class Board {
   // 7 columns, 6 rows
   // "red" "yel"
-  // grid[0-7][0-6]
+  // grid[0-6 column][0-5 row]
 
   constructor() {
     this.grid = [[],[],[],[],[],[],[]];
@@ -28,7 +28,7 @@ class Board {
     }
   }
 
-  // checksForAllWins()
+  // CHECKS FOR WINNING CONDITIONS
 
   checksForAllWins() {
     var totalVictory = false
@@ -88,7 +88,6 @@ class Board {
         console.log(`i: ${i}, winner: ${winner}, upward sloped win`);
         victory = winner }
     }
-
     for (let i=0; i<5; i++) {
       var winner = this.upwardSlopeWin(0, i, 0, "yel");
       if (winner) { 
@@ -118,17 +117,18 @@ class Board {
     return victory;
   }
 
-  // columnWin(0, 0, 1, "yel")
+  // CHECK FOR SINGLE WIN
+  // ON A INDIVIDUAL COLUMN, ROW, DIAGONAL
+  // e.g. columnWin(0,0,0, "yel")
+  // upwardSlopeWin(0,4,0, "yel")
 
   columnWin(column, row, inARow, color) {
     if (inARow == 4) { return color }
     var notEnoughSpace = notEnoughSpacesToWin()
     if (notEnoughSpace) { console.log("end check for column ", column); return false };
-    
     if (row > 6 ) { console.log("it broke"); return false }
-
     function notEnoughSpacesToWin() {
-      // number of spaces left for checking is greater or equal to
+      // return false if number of spaces left for checking is greater or equal to
       // the number left needed to make a winning 4
       if (6 - row >= 4 - inARow) {
         return false
@@ -137,7 +137,6 @@ class Board {
         return true
       }
     }
-
     if (row == 0) {
       var newColor = this.grid[column][row];
       var newScore = inARow + 1;
@@ -154,25 +153,18 @@ class Board {
     }
   }
 
-  // rowWin(0, 0, 1, "red")
-
   rowWin(row, column, inARow, color) {
     if (inARow == 4) { return color }
     var notEnoughSpace = notEnoughSpacesToWin();
     if (notEnoughSpace) { console.log("end check for row ", row); return false };
     if (column > 7 ) { console.log("it broke"); return false };
-
     function notEnoughSpacesToWin() {
-      // number of spaces left for checking is greater or equal to
-      // the number left needed to make a winning 4
       if (7 - column >= 4 - inARow) {
         return false
       } else {
-        // there isnt enough space to continue our check
         return true
       }
     }
-
     if (column == 0) {
       var newColor = this.grid[column][row];
       var newScore = inARow + 1;
@@ -187,36 +179,26 @@ class Board {
       var newColumn = column + 1;
       return this.rowWin(row, newColumn, 1, newColor)
     }
-
   }
-
-  // upwardSlopeWin(column, row, 1, "red")
 
   upwardSlopeWin(column, row, inARow, color) {
     if (inARow == 4) { return color }
     var notEnoughSpace = notEnoughSpacesToWin();
     if (notEnoughSpace) { console.log("end check for upward slope"); return false };
-
     if (column > 7 || row > 5 ) { console.log("it broke"); return false };
-
     function notEnoughSpacesToWin() {
-
       var spacesLeft = getSpacesLeft()
-
       function getSpacesLeft() {
         var columnsLeft = 6 - column;
         var rowsLeft = 5 - row;
         return Math.min(rowsLeft, columnsLeft);
       }
-
       if (spacesLeft >= 4 - inARow) {
         return false
       } else {
-        // there isnt enough space to continue our check
         return true
       }
     }
-
     if (column == 0 || row == 0) {
       var newColor = this.grid[column][row];
       var newScore = inARow + 1;
@@ -234,38 +216,28 @@ class Board {
       var newRow = row + 1;
       return this.upwardSlopeWin(newColumn, newRow, 1, newColor)
     }
-
   }  
 
-  // downwardSlopeWin()
-  // this just checks "right to left" in a similar manner as upwardSlopeWin
+  // The "downward" slope check works the same as upwardSlopeWin but right to left
 
   downwardSlopeWin(column, row, inARow, color) {
     if (inARow == 4) { return color }
-
     var notEnoughSpace = notEnoughSpacesToWin()
     if (notEnoughSpace) { console.log("end check for downward slope"); return false };
-    
     if (row > 6 ) { console.log("it broke"); return false }
-
     function notEnoughSpacesToWin() {
-
-      var spacesLeft = getSpacesLeft()
-      
+      var spacesLeft = getSpacesLeft()   
       function getSpacesLeft() {
         var columnsLeft = column;
         var rowsLeft = 5 - row;
         return Math.min(rowsLeft, columnsLeft);
       }
-
       if (spacesLeft >= 4 - inARow) {
         return false
       } else {
-        // there isnt enough space to continue our check
         return true
       }
     }
-
     if (column == 6 || row == 0) {
       var newColor = this.grid[column][row]
       var newScore = inARow + 1;
@@ -283,8 +255,6 @@ class Board {
       var newColumn = column - 1;
       return this.downwardSlopeWin(newColumn, newRow, 1, newColor) 
     }
-
-
   }
 
 }

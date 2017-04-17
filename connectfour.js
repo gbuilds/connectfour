@@ -28,6 +28,48 @@ class Board {
     }
   }
 
+  flipPlayer() {
+    if (this.playerOne == false) {
+      this.playerOne = true
+    } else {
+      this.playerOne = false
+    }
+  }
+
+  isEmptyCell(column, row) {
+    var cell = this.grid[column][row]
+    if (cell === "red" || cell === "yel") {
+      return false
+    } else {
+      return true
+    }
+  }
+
+  turnInfo() {
+    if (this.playerOne == true) {
+      console.log("player one's turn...");
+      console.log("playing", this.color);
+    } else {
+      console.log("player two's turn...");
+      console.log("playing", this.color);
+    }
+  }
+
+  randomMove() {
+    var column = Math.floor((Math.random() * 7))
+    var added = this.addPiece(this.grid, column, this.color)
+    if (added) {
+      console.log(`Placed ${this.color} in column ${column}`);
+      this.color = this.flipColor(this.color)
+      var victory = this.checksForAllWins()
+      if (!victory) { console.log("Next turn.."); }
+      return true
+    } else {
+      console.log(`Tried to put ${this.color} in column ${column}... full`);
+      return false
+    }
+  }
+
   // CHECKS FOR WINNING CONDITIONS
 
   checksForAllWins() {
@@ -175,9 +217,14 @@ class Board {
       var newColumn = column + 1;
       return this.rowWin(row, newColumn, newScore, color)
     } else {
+      if (this.isEmptyCell(column, row)) {
+        var newScore = 0
+      } else {
+        var newScore = 1
+      }
       var newColor = this.flipColor(color)
       var newColumn = column + 1;
-      return this.rowWin(row, newColumn, 1, newColor)
+      return this.rowWin(row, newColumn, newScore, newColor)
     }
   }
 
@@ -211,10 +258,15 @@ class Board {
       var newRow = row + 1;
       return this.upwardSlopeWin(newColumn, newRow, newScore, color)
     } else {
+      if (this.isEmptyCell(column, row)) {
+        var newScore = 0
+      } else {
+        var newScore = 1
+      }
       var newColor = this.flipColor(color)
       var newColumn = column + 1;
       var newRow = row + 1;
-      return this.upwardSlopeWin(newColumn, newRow, 1, newColor)
+      return this.upwardSlopeWin(newColumn, newRow, newScore, newColor)
     }
   }  
 
@@ -250,10 +302,15 @@ class Board {
       var newColumn = column - 1;
       return this.downwardSlopeWin(newColumn, newRow, newScore, color)
     } else {
+      if (this.isEmptyCell(column, row)) {
+        var newScore = 0
+      } else {
+        var newScore = 1
+      }
       var newColor = this.flipColor(color)
       var newRow = row + 1;
       var newColumn = column - 1;
-      return this.downwardSlopeWin(newColumn, newRow, 1, newColor) 
+      return this.downwardSlopeWin(newColumn, newRow, newScore, newColor) 
     }
   }
 

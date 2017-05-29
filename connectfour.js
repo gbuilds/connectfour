@@ -55,6 +55,9 @@ class Board {
     }
   }
 
+  // do a random move for testing, generating arbitrary board states
+  // and bad computer players
+
   randomMove() {
     var column = Math.floor((Math.random() * 7))
     var added = this.addPiece(this.grid, column, this.color)
@@ -70,7 +73,13 @@ class Board {
     }
   }
 
-  // CHECKS FOR WINNING CONDITIONS
+  // THE METHODS TO CHECK FOR WINNING CONDITIONS
+  // * checksForAllWins *
+  // checkForColumnWin
+  // checkForRowWin
+  // checkForUpwardSlopeWin
+  // checkForDownwardSlopeWin
+
 
   checksForAllWins() {
     var totalVictory = false
@@ -159,10 +168,10 @@ class Board {
     return victory;
   }
 
-  // CHECK FOR SINGLE WIN
-  // ON A INDIVIDUAL COLUMN, ROW, DIAGONAL
+  // METHODS TO CHECK FOR SINGLE WIN ON AN INDIVIDUAL COLUMN, ROW, DIAGONAL
   // e.g. columnWin(0,0,0, "yel")
   // upwardSlopeWin(0,4,0, "yel")
+  // used as part of overall victory check methods
 
   columnWin(column, row, inARow, color) {
     if (inARow == 4) { return color }
